@@ -1,3 +1,6 @@
+import { HomeProps } from '@/types';
+import { fetchCars } from '@/utils';
+
 export default function Home() {
   return (
     <main >
