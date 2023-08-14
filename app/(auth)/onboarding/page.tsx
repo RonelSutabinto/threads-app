@@ -1,9 +1,12 @@
-async function Page() {
-  return (
-    <main>
-      <h1 className="head-text">Onboarding</h1>
-    </main>
-  )
-}
+import { UserButton } from "@clerk/nextjs";
 
-export default Page;
+async function Page() {
+    return (
+      <main>
+        <h1 className="head-text">Onboarding Ronel</h1>
+        <UserButton afterSignOutUrl="/"/>
+      </main>
+    )
+  }
+  
+  export default Page;

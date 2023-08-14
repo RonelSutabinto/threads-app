@@ -1,4 +1,4 @@
-// File: /Users/ronelsutabinto/Desktop/SourceCode/ReactJS/NextJS/threads-app/app/(root)/page.tsx
+// File: /Users/ronelsutabinto/Documents/Source Code/React/threads-app/app/(root)/page.tsx
 import * as entry from '../../../../app/(root)/page.js'
 import type { ResolvingMetadata } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
