@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 // import { Form } from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userValidation } from '@/lib/validations/user';
+import { usePathname, useRouter } from 'next/navigation';
 
 import {
   Form,
@@ -22,6 +23,7 @@ import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
 import { isBase64Image } from '@/lib/utils';
 import { useUploadThing } from '@/lib/uploadthing';
+import { updateUser } from '@/lib/actions/user.actions';
 
 interface Props {
     user: {
@@ -39,6 +41,8 @@ interface Props {
 const AccountProfile = ({user, btnTitle}: Props) => {
     const [files, setFiles] = useState<File[]>([]);
     const { startUpload } = useUploadThing("media");
+    const router = useRouter();
+    const pathname = usePathname();
 
     const form = useForm({
       resolver: zodResolver(userValidation),
@@ -85,11 +89,22 @@ const AccountProfile = ({user, btnTitle}: Props) => {
         }
       }
 
-      // TODO: Update user profile
+      await updateUser({
+        userId: user.id,
+        username: values.username,
+        name: values.name,
+        bio: values.bio,
+        image: values.profile_photo,
+        path: pathname
+      });
 
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
-      console.log(values)
+      if(pathname === '/profile/edit'){
+        router.back();
+      } else {
+        router.push('/');
+      }
+
+      //console.log(values)
     }
 
     return (
@@ -116,7 +131,7 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   ) : (
                     <Image
                       src='/assets/profile.svg'
-                      alt='profile_icon'
+                      alt='profile photo'
                       width={24}
                       height={24}
                       className='object-contain'
@@ -127,11 +142,12 @@ const AccountProfile = ({user, btnTitle}: Props) => {
                   <Input
                     type='file'
                     accept='image/*'
-                    placeholder='Add profile photo'
+                    placeholder='Upload a profile photo'
                     className='account-form_image-input'
                     onChange={(e) => handleImage(e, field.onChange)}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
